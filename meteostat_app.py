@@ -6,8 +6,7 @@ import plotly.graph_objs as go
 
 
 
-
-
+#####
 def create_page_header():
     st.markdown(
         """<style>.block-container {padding-top: 1rem; padding-bottom: 0rem; padding-left: 3rem; padding-right: 3rem;}</style>""",
@@ -25,6 +24,10 @@ def create_page_header():
 
 
 
+
+
+#####
+st.set_page_config(page_title="Meteostat App",   page_icon=':mostly_sunny:', layout="wide")
 create_page_header()
 
 
