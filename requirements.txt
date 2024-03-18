@@ -1,7 +1,9 @@
 datetime
 meteostat
+folium
 pandas
 plotly
+pydeck
 streamlit
 streamlit-aggrid==0.3.4.post3
 streamlit-card

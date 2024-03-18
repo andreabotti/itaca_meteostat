@@ -1,5 +1,75 @@
-from fn__import_py_libs import *
 import streamlit as st
+from meteostat import Stations, Hourly, Point
+import pandas as pd
+from datetime import datetime, timedelta
+import plotly.graph_objs as go
+import pydeck as pdk
+import folium
+from streamlit_folium import st_folium, folium_static
+# from folium.plugins import ClickForMarker
+
+
+
+#####
+def create_page_header():
+    st.markdown(
+        """<style>.block-container {padding-top: 1rem; padding-bottom: 0rem; padding-left: 3rem; padding-right: 3rem;}</style>""",
+        unsafe_allow_html=True)
+    #
+    # TOP CONTAINER
+    TopColA, TopColB = st.columns([6,2])
+    with TopColA:
+        st.markdown("## Download weather data from Meteostat")
+        # st.markdown("#### Analisi di dati meteorologici ITAliani per facilitare l'Adattamento ai Cambiamenti Climatici")
+        st.caption('Developed by AB.S.RD - https://absrd.xyz/')
+    #
+    st.markdown('---')
+
+
+
+# Function to display a map and capture click events
+def display_map():
+    # Initial map center and zoom level
+    INITIAL_VIEW_STATE = pdk.ViewState(
+        latitude=37.7749,
+        longitude=-122.4194,
+        zoom=11,
+        pitch=0,
+    )
+
+    # PyDeck layer for displaying map (no data in this example, just base map)
+    layer = pdk.Layer(
+        'ScatterplotLayer',
+        data=pd.DataFrame({
+            'lat': [],
+            'lon': [],
+        }),
+        get_position='[lon, lat]',
+        get_color='[200, 30, 0, 160]',
+        get_radius=200,
+    )
+
+    # Render map with PyDeck
+    st.pydeck_chart(pdk.Deck(
+        map_style='mapbox://styles/mapbox/light-v9',
+        initial_view_state=INITIAL_VIEW_STATE,
+        layers=[layer],
+    ))
+
+    # Handling map click events
+    map_click_info = st.session_state.get("map_click_info", None)
+    if map_click_info:
+        lat, lon = map_click_info["coordinates"]
+        st.write(f"Latitude: {lat}, Longitude: {lon}")
+    else:
+        st.write("Click on the map to get the latitude and longitude.")
+
+# Callback to capture click events
+def map_click_handler(event_info):
+    st.session_state["map_click_info"] = event_info
+
+
+
 
 
 
